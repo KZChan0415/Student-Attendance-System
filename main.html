@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Page</title>
+    <link rel="stylesheet" href="Styles/style.css">
+</head>
+<body>
+    <div class="id_container">
+        <h2>NAME: <span id="display_name">Waiting...</span></h2>
+        <h2>ID: <span id="display_id">---</span></h2>
+    </div>
+
+    <div id="status_message">
+        TAP HERE TO START SCANNER
+    </div>
+
+    <div class="nav_container">
+        <button class="nav_button" onclick="window.location.href='class.html'">RETURN</button>
+        
+        <button class="nav_button" onclick="window.location.href='view.html' + window.location.search">DONE</button>
+    </div>
+    
+    <script src="Logic/main.js?v=3"></script>
+</body>
+</html>
