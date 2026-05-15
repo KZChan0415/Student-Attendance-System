@@ -4,67 +4,65 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentClassId = urlParams.get('class');
     const currentWeek = urlParams.get('week');
 
-    // 1. Safety check for the URL
     if (!currentClassId || !currentWeek) {
-        container.innerHTML = `<h2 style="color: red; text-align: center;">Error: Missing Class or Week Data</h2>`;
+        container.innerHTML = `<div class="header"><h2>Error: Missing Data</h2></div>`;
         return;
     }
 
-    // 2. Table structure
     container.innerHTML = `
         <div class="header">
-            <h2>${currentClassId} - Week ${currentWeek}</h2>
+            <h2>${currentClassId} - WEEK ${currentWeek}</h2>
         </div>
-        <div style="overflow-x: auto; padding: 10px;">
-            <table style="width: 100%; border-collapse: collapse; margin-top: 10px; background-color: white; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-radius: 8px; overflow: hidden;">
-                <thead>
-                    <tr style="background-color: #f8fafc; text-align: left;">
-                        <th style="padding: 15px; border-bottom: 2px solid #e2e8f0; color: #334155;">Student ID</th>
-                        <th style="padding: 15px; border-bottom: 2px solid #e2e8f0; color: #334155;">Student Name</th>
-                        <th style="padding: 15px; border-bottom: 2px solid #e2e8f0; color: #334155; text-align: center;">Presence</th>
-                        <th style="padding: 15px; border-bottom: 2px solid #e2e8f0; color: #334155; text-align: center;">Time</th>
-                    </tr>
-                </thead>
-                <tbody id="attendance_table_body">
-                    <tr><td colspan="4" style="text-align: center; padding: 20px; color: #64748b;">Fetching attendance data...</td></tr>
-                </tbody>
-            </table>
+        
+        <div style="width: 100%; max-width: var(--app-max-width); margin: 0 auto; margin-bottom: 24px; background: var(--bg-card); border: 2px solid var(--border-color); border-radius: var(--radius-md); box-shadow: var(--shadow-card); overflow: hidden;">
+            <div style="width: 100%; overflow-x: auto;">
+                <table style="width: 360px; border-collapse: collapse; text-align: center;">
+                    <thead>
+                        <tr style="background-color: var(--bg-surface); border-bottom: 2px solid var(--border-color);">
+                            <th style="padding: 14px 6px; color: var(--text-main); font-size: 0.9rem; font-weight: 700;">ID</th>
+                            <th style="padding: 14px 6px; color: var(--text-main); font-size: 0.9rem; font-weight: 700;">Name</th>
+                            <th style="padding: 14px 6px; color: var(--text-main); font-size: 0.9rem; font-weight: 700;">Status</th>
+                            <th style="padding: 14px 6px; color: var(--text-main); font-size: 0.9rem; font-weight: 700;">Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendance_table_body">
+                        <tr><td colspan="4" style="text-align: center; padding: 30px; color: var(--text-muted); font-weight: 700; font-size: 0.95rem;">Loading data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     `;
 
     const tableBody = document.getElementById('attendance_table_body');
 
-    // 3. Fetch the data from database
     fetch(`Backend/view.php?class=${currentClassId}&week=${currentWeek}`)
         .then(response => response.text())
         .then(rawText => {
             try {
                 const data = JSON.parse(rawText); 
-                
                 tableBody.innerHTML = ''; 
 
                 if (data.length === 0) {
-                    tableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 20px; color: #64748b;">No students found enrolled in this class.</td></tr>`;
+                    tableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 30px; color: var(--text-muted); font-weight: 700; font-size: 0.95rem;">No students found.</td></tr>`;
                     return;
                 }
 
                 data.forEach(student => {
                     const tr = document.createElement('tr');
+                    tr.style.borderBottom = "1px solid #f1f5f9";
                     
-                    let presence = `<span style="color: #ef4444; font-weight: bold; background-color: #fee2e2; padding: 5px 10px; border-radius: 6px;">Absent</span>`;
-                    let formattedTime = "---";
+                    let presence = `<span style="color: #ef4444; font-weight: 800; font-size: 0.8rem; letter-spacing: 0.5px;">ABSENT</span>`;
+                    let formattedTime = "-";
 
                     if (student.presence_status == 1 || student.presence_status === "Present") {
-                        presence = `<span style="color: #10b981; font-weight: bold; background-color: #d1fae5; padding: 5px 10px; border-radius: 6px;">Present</span>`;
+                        presence = `<span style="color: #10b981; font-weight: 800; font-size: 0.8rem; letter-spacing: 0.5px;">PRESENT</span>`;
                         
                         if (student.time_taken) {
                             if (student.time_taken.length <= 8) {
                                 formattedTime = student.time_taken;
-                            
                             } else {
                                 let mobileSafeTime = student.time_taken.replace(' ', 'T');
                                 const dateObj = new Date(mobileSafeTime);
-
                                 if (!isNaN(dateObj)) {
                                     formattedTime = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                                 } else {
@@ -75,23 +73,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                     tr.innerHTML = `
-                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; font-weight: bold; color: #0f172a;">${student.student_id}</td>
-                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #475569;">${student.student_name}</td>
-                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; text-align: center;">${presence}</td>
-                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; text-align: center; color: #64748b;">${formattedTime}</td>
+                        <td style="padding: 16px 6px; font-weight: 700; color: var(--text-main); font-size: 0.85rem; text-align: center;">${student.student_id}</td>
+                        <td style="padding: 16px 6px; color: var(--text-muted); font-size: 0.85rem; font-weight: 600; text-align: center;">${student.student_name}</td>
+                        <td style="padding: 16px 6px; text-align: center;">${presence}</td>
+                        <td style="padding: 16px 6px; color: var(--text-muted); font-size: 0.85rem; text-align: center; font-weight: 600;">${formattedTime}</td>
                     `;
                     
                     tableBody.appendChild(tr);
                 });
 
             } catch (parseError) {
-                console.error("PHP CRASH TEXT:", rawText);
-                tableBody.innerHTML = `<tr><td colspan="4" style="text-align: left; color: red; padding: 20px; font-weight: bold; background: #fee2e2;">
-                    <b>PHP CRASH REPORT:</b><br><br> ${rawText}
-                </td></tr>`;
+                console.error("PHP Error:", rawText);
+                tableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: red; padding: 25px; font-weight: bold;">System Error</td></tr>`;
             }
         })
         .catch(error => {
-            tableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: red; padding: 20px; font-weight: bold;">Network failed entirely.</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: red; padding: 25px; font-weight: bold;">Network Error</td></tr>`;
         });
 });

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Face Registration Page</title>
+    <link rel="stylesheet" href="Styles/style.css?v=6">
+</head>
+<body>
+    <div class="header">
+        <h2>Register Face ID</h2>
+    </div>
+
+    <video id="camera_preview" autoplay muted playsinline></video>
+
+    <div id="status_message">
+        Loading Models...
+    </div>
+
+    <input type="text" id="student_id_input" placeholder="Enter Student ID" required>
+
+    <div class="nav_container">
+        <button id="capture_btn" class="nav_button">CAPTURE & SAVE FACE</button>
+        <button class="nav_button" onclick="window.location.href='class.html'">RETURN</button>
+    </div>
+    
+    <script src="Logic/face-api.min.js"></script>
+    <script src="Logic/registerFace.js?v=6"></script>
+</body>
+</body>
+</html>

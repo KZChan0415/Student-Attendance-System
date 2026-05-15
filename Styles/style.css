@@ -1,0 +1,258 @@
+/* Design Tokens */
+:root {
+    /* Color Palette */
+    --primary-color: #2563eb;
+    --primary-active: #1e40af;
+    --bg-surface: #f8fafc;
+    --bg-card: #ffffff;
+    
+    /* Typography Colors */
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    
+    /* System Sizing & Layout */
+    --app-max-width: 420px; 
+    --touch-target-min: 52px; 
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --spacing-md: 16px;
+    
+    /* Shadows */
+    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.04);
+    --shadow-button: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--bg-surface);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-md);
+    padding-bottom: calc(var(--spacing-md) + env(safe-area-inset-bottom)); 
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* Header and ID Container */
+.header, .id_container {
+    background: var(--bg-card);
+    width: 100%;
+    max-width: var(--app-max-width);
+    padding: 20px var(--spacing-md);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.id_container {
+    border-top: 5px solid var(--primary-color);
+}
+
+.header h1 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.3;
+}
+
+.header h2, .id_container h2 {
+    font-size: 1rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+#display_name, #display_id {
+    display: block;
+    color: var(--text-main);
+    font-weight: 800;
+    font-size: 1.4rem;
+    margin-top: 4px;
+}
+
+/* Camera Preview */
+#camera_preview {
+    width: 100%;
+    max-width: var(--app-max-width);
+    aspect-ratio: 4 / 3; 
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    background: #000;
+    box-shadow: var(--shadow-card);
+    margin-bottom: var(--spacing-md);
+    border: 4px solid var(--bg-card);
+}
+
+#status_message {
+    width: 100%;
+    max-width: var(--app-max-width);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-align: center;
+    background-color: var(--border-color);
+    color: var(--text-main);
+    margin-bottom: 24px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Text Inputs */
+input[type="text"] {
+    width: 100%;
+    max-width: var(--app-max-width);
+    min-height: var(--touch-target-min);
+    padding: 0 var(--spacing-md);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: 1.1rem;
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    margin-bottom: var(--spacing-md);
+    transition: border-color 0.2s ease;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+/* Navigation & Buttons */
+.nav_container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    width: 100%;
+    max-width: var(--app-max-width);
+}
+
+.nav_button {
+    flex: 1;
+    min-width: 120px;
+    min-height: var(--touch-target-min);
+    background-color: var(--bg-card);
+    color: var(--text-muted);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.1s ease, background-color 0.2s ease;
+}
+
+.nav_button:active {
+    transform: scale(0.97);
+    background-color: var(--border-color);
+}
+
+/* Register Button */
+#capture_btn {
+    flex: 100%;
+    background-color: var(--primary-color) !important;
+    color: #ffffff !important;
+    border: none;
+    box-shadow: var(--shadow-button);
+}
+
+#capture_btn:active {
+    background-color: var(--primary-active) !important;
+}
+
+/* Grids */
+.class_container div {
+    background: var(--bg-card);
+    border: 2px solid #cbd5e1;  
+    width: 100%;
+    min-height: 85px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--text-main);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; 
+    padding-left: 24px;
+    padding-right: 24px;
+    transition: transform 0.1s ease, border-color 0.2s ease, background-color 0.2s ease;
+    margin-bottom: var(--spacing-md);
+}
+
+.class_container div:active {
+    transform: scale(0.97);
+    border-color: var(--primary-color);
+    background-color: #f8fafc; 
+}
+
+.week_row {
+    background: var(--bg-card);
+    border: 2px solid #cbd5e1;
+    border-radius: var(--radius-md);
+    width: 100%;
+    min-height: 75px;
+    padding: 0 16px 0 24px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 100px;
+}
+
+.week_label {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.week_group {
+    display: flex;
+    gap: 10px;
+}
+
+.week_button {
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.1s ease, background-color 0.2s ease;
+    letter-spacing: 0.5px;
+}
+
+.week_button:first-child {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+}
+
+.week_button:first-child:active {
+    background-color: var(--primary-active);
+    transform: scale(0.95);
+}
+
+.week_button:last-child {
+    background-color: #f1f5f9;
+    color: var(--text-muted);
+    border: 2px solid #cbd5e1;
+}
+
+.week_button:last-child:active {
+    background-color: #e2e8f0;
+    transform: scale(0.95);
+}

@@ -38,7 +38,7 @@ if ($enroll_stmt->get_result()->num_rows === 0) {
 }
 $enroll_stmt->close();
 
-// 3. Duplicate Check (Now safely checks BOTH week and class!)
+// 3. Duplicate Check
 $dup_stmt = $conn->prepare("SELECT log_id FROM attendance WHERE student_id = ? AND class_id = ? AND week_number = ?");
 $dup_stmt->bind_param("ssi", $student_id, $class_id, $week);
 $dup_stmt->execute();

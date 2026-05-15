@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Scan Page</title>
-    <link rel="stylesheet" href="Styles/style.css">
+    <link rel="stylesheet" href="Styles/style.css?v=6">
 </head>
 <body>
     <div class="id_container">
@@ -16,12 +16,15 @@
         TAP HERE TO START SCANNER
     </div>
 
+    <video id="camera_preview" width="300" height="225" autoplay muted playsinline style="border-radius: 8px; border: 2px solid #cbd5e1; background: #000; display: none;"></video>
+
     <div class="nav_container">
         <button class="nav_button" onclick="window.location.href='class.html'">RETURN</button>
         
         <button class="nav_button" onclick="window.location.href='view.html' + window.location.search">DONE</button>
     </div>
     
-    <script src="Logic/main.js?v=3"></script>
+    <script src="Logic/face-api.min.js"></script>
+    <script src="Logic/main.js?v=6"></script>
 </body>
 </html>
