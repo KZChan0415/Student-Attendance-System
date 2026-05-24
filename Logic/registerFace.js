@@ -3,6 +3,10 @@ const statusMessage = document.getElementById('status_message');
 const captureBtn = document.getElementById('capture_btn');
 const studentInput = document.getElementById('student_id_input');
 
+studentInput.addEventListener('input', function() {
+    this.value = this.value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+});
+
 document.addEventListener('DOMContentLoaded', async () => {
     captureBtn.disabled = true; 
     
