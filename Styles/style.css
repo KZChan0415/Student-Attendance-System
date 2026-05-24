@@ -171,6 +171,14 @@ input[type="text"]:focus {
     background-color: var(--primary-active) !important;
 }
 
+#capture_btn:disabled {
+    background-color: #94a3b8 !important; /* Flat gray */
+    color: #f1f5f9 !important;
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+}
+
 /* Grids */
 .class_container div {
     background: var(--bg-card);

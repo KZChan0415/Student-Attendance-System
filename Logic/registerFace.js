@@ -4,14 +4,21 @@ const captureBtn = document.getElementById('capture_btn');
 const studentInput = document.getElementById('student_id_input');
 
 document.addEventListener('DOMContentLoaded', async () => {
+    captureBtn.disabled = true; 
+    
     updateStatus("Loading Mobile Models...", "#854d0e", "#fef08a");
     await loadAPI();
     
     updateStatus("Starting Camera...", "#475569", "#e2e8f0");
-    await startCamera();
+    const cameraStarted = await startCamera();
     
-    updateStatus("Ready. Enter ID, face the camera, and click Capture.", "#1e293b", "#e2e8f0");
-});
+    if (cameraStarted === true) {
+        updateStatus("Ready. Enter ID, face the camera, and click Capture.", "#1e293b", "#e2e8f0");
+        captureBtn.disabled = false; 
+    } else {
+        captureBtn.disabled = true; 
+    }
+})
 
 async function loadAPI() {
     try {
@@ -38,9 +45,14 @@ async function startCamera() {
         video.onloadedmetadata = () => {
             video.play();
         };
+        
+        return true;
+        
     } catch (error) {
         console.error("Camera Error:", error);
-        updateStatus("Camera access denied or missing!", "#991b1b", "#fecaca");
+        updateStatus("Camera access denied or missing! Please allow permissions.", "#991b1b", "#fecaca");
+        
+        return false;
     }
 }
 
