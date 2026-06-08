@@ -46,7 +46,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 isProcessing = true;      
 
                 updateStatus("Processing...", "#854d0e", "#fef08a");
-                displayName.innerText = "Scanning Face...";
                 displayId.innerText = "---";
 
                 const uid = serialNumber;
@@ -142,14 +141,19 @@ async function verifyFaceAndAttend(uid, studentIdFromCard) {
 
         updateStatus("Comparing Geometry...", "#854d0e", "#fef08a");
         const savedDescriptorArray = new Float32Array(JSON.parse(savedFaceDataString));
-        
-        const faceMatcher = new faceapi.FaceMatcher(savedDescriptorArray, 0.55);
+        const labeledFace = new faceapi.LabeledFaceDescriptors(
+            studentIdFromCard, 
+            [savedDescriptorArray]
+        );
+
+        const faceMatcher = new faceapi.FaceMatcher([labeledFace], 0.45); 
         const matchResult = faceMatcher.findBestMatch(liveDetection.descriptor);
 
-        if (matchResult.label !== 'unknown') {
+        if (matchResult.label === studentIdFromCard) {
             updateStatus("Face Verified!", "#065f46", "#a7f3d0");
             processAttendance(uid, studentIdFromCard);  
         } else {
+            console.log("Failed Match Data:", matchResult.toString());
             updateStatus("SECURITY ALERT: Face Mismatch!", "#991b1b", "#fecaca");
             resetScanner();
         }
