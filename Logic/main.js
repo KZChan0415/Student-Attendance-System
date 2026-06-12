@@ -130,23 +130,24 @@ async function verifyFaceAndAttend(uid, studentIdFromCard) {
             return;
         }
 
-        updateStatus("Fetching Database...", "#854d0e", "#fef08a");
-        const savedFaceDataString = await fetchFaceData(studentIdFromCard);
-        
-        if (!savedFaceDataString) {
-            updateStatus("Error: Face not registered.", "#991b1b", "#fecaca");
+        updateStatus("Verifying Card & Database...", "#854d0e", "#fef08a");
+        const dbResponse = await fetchFaceData(studentIdFromCard, uid);
+
+        if (!dbResponse || dbResponse.status !== 'success') {
+            updateStatus(dbResponse ? dbResponse.message : "Database connection error.", "#991b1b", "#fecaca");
             resetScanner();
             return;
         }
 
         updateStatus("Comparing Geometry...", "#854d0e", "#fef08a");
-        const savedDescriptorArray = new Float32Array(JSON.parse(savedFaceDataString));
+        
+        const savedDescriptorArray = new Float32Array(JSON.parse(dbResponse.face_descriptor));
         const labeledFace = new faceapi.LabeledFaceDescriptors(
             studentIdFromCard, 
             [savedDescriptorArray]
         );
 
-        const faceMatcher = new faceapi.FaceMatcher([labeledFace], 0.45); 
+        const faceMatcher = new faceapi.FaceMatcher([labeledFace], 0.40); 
         const matchResult = faceMatcher.findBestMatch(liveDetection.descriptor);
 
         if (matchResult.label === studentIdFromCard) {
@@ -165,17 +166,10 @@ async function verifyFaceAndAttend(uid, studentIdFromCard) {
     }
 }
 
-async function fetchFaceData(studentId) {
+async function fetchFaceData(studentId, uid) {
     try {
-        const response = await fetch(`Backend/getFace.php?student_id=${encodeURIComponent(studentId)}`);
-        const data = await response.json();
-
-        if (data.status === 'success' && data.face_descriptor) {
-            return data.face_descriptor; 
-        } else {
-            console.warn("Face lookup failed:", data.message);
-            return null; 
-        }
+        const response = await fetch(`Backend/getFace.php?student_id=${encodeURIComponent(studentId)}&nfc_uid=${encodeURIComponent(uid)}`);
+        return await response.json(); 
     } catch (error) {
         console.error("Database fetch error:", error);
         return null;
